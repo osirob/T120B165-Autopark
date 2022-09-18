@@ -29,7 +29,7 @@ Administratorius galės:
 - Ištrinti betkurį skelbimą
 - Uždrausti naudotojui kurti naujus skelbimus
 
-## Sistemos architektūra
+## 2. Sistemos architektūra
 Sistema sudarys:
 - Kliento aplikacija - naudojant Angular
 - Serverio pusė - naudojant .Net Core Web Api ir duomenų bazė Microsoft SQL Server
