@@ -11,4 +11,27 @@ Projektą sudarys dvi dalys. Pirma - internetinė aplikacija, kurią naudos sve�
 
 ### 1.2. Funkciniai reikalavimai
 Svečias galės:
-- aa
+- Peržiūrėti automobilių skelbimus
+- Prisiregistruoti
+
+Naudotojas galės:
+- Prisijungti
+- Atsijungti
+- Kurti automobilio skelbimą
+- Redaguoti automobilio skelbimą
+- Ištrinti automobilio skelbimą
+- Komentuoti po skelbimais
+
+Administratorius galės:
+- Prisijungti
+- Atsijungti
+- Peržiūrėti automobilių skelbimus
+- Ištrinti betkurį skelbimą
+- Uždrausti naudotojui kurti naujus skelbimus
+
+## Sistemos architektūra
+Sistema sudarys:
+- Kliento aplikacija - naudojant Angular
+- Serverio pusė - naudojant .Net Core Web Api ir duomenų bazė Microsoft SQL Server
+
+Sistėmos talpinimui bus naudojamas Azure/AWS.
