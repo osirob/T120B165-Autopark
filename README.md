@@ -35,3 +35,5 @@ Sistema sudarys:
 - Serverio pusė - naudojant .Net Core Web Api ir duomenų bazė Microsoft SQL Server
 
 Sistėmos talpinimui bus naudojamas Azure/AWS.
+
+![deployment](https://imgur.com/a/o9WsJ6u)
