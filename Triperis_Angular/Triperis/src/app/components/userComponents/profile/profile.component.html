@@ -1,0 +1,10 @@
+<p>This component is only for testing stuff</p>
+<ng-container *ngIf="userDetails">
+    <p>You are logged in!</p>
+    <p>Username: {{userDetails.userName}}</p>
+    <p>E-mail: {{userDetails.email}}</p>
+    <p>Phone: {{userDetails.phone}}</p>
+    <p>ID: {{userDetails.id}}</p>
+    <p>Can create listing: {{userDetails.canCreateListings}}</p>
+    <p>Can comment: {{userDetails.canComment}}</p>
+</ng-container>

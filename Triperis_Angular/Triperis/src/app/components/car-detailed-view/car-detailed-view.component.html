@@ -1,0 +1,151 @@
+<div *ngIf="ready === 3">
+    <div class="offset">
+        <mat-icon
+            *ngIf="car.ispejimas" 
+            style="float: right;"
+            matTooltip="Automobilis galimai gali turėti defektų"
+            matTooltipClass="red"
+        >warning</mat-icon> <h1>{{car.marke}} {{car.modelis}} {{car.kebuloTipas}} {{car.metai}} m</h1>
+        <p class="gray">Atnaujinta {{dateUpdated}}</p>
+    </div>
+    
+    <div class="info">
+        <div class="seller">
+            <div class="sellerName">
+                <p>Pardavėjas | {{seller.userName}}</p>
+            </div>
+            <mat-divider></mat-divider>
+            <div class="phone">
+                <p>{{seller.phone}}</p>
+            </div>
+            <div class="email">
+                <p>{{seller.email}}</p>
+            </div>
+            <mat-divider></mat-divider>
+        </div>
+        <div class="car">
+            <div class="attrName">
+                <p>Markė</p>
+            </div>
+            <div class="attrValue">
+                <p>{{car.marke}}</p>
+            </div>
+    
+            <div class="attrName">
+                <p>Modelis</p>
+            </div>
+            <div class="attrValue">
+                <p>{{car.modelis}}</p>
+            </div>
+    
+            <div class="attrName">
+                <p>Metai</p>
+            </div>
+            <div class="attrValue">
+                <p>{{car.metai}}</p>
+            </div>
+    
+            <div class="attrName">
+                <p>Variklis</p>
+            </div>
+            <div class="attrValue">
+                <p>{{car.variklioTuris}} l. {{car.galia}} kW</p>
+            </div>
+    
+            <div class="attrName">
+                <p>Kuro tipas</p>
+            </div>
+            <div class="attrValue">
+                <p>{{car.kuroTipas}}</p>
+            </div>
+    
+            <div class="attrName">
+                <p>Kėbulo tipas</p>
+            </div>
+            <div class="attrValue">
+                <p>{{car.kebuloTipas}}</p>
+            </div>
+    
+            <div class="attrName">
+                <p>Spalva</p>
+            </div>
+            <div class="attrValue">
+                <p>{{car.spalva}}</p>
+            </div>
+    
+            <div class="attrName">
+                <p>Pavarų dėžė</p>
+            </div>
+            <div class="attrValue">
+                <p>{{car.pavaruDeze}}</p>
+            </div>
+    
+            <div class="attrName">
+                <p>Rida, km</p>
+            </div>
+            <div class="attrValue">
+                <p>{{car.rida}}</p>
+            </div>
+    
+            <div class="attrName">
+                <p>Defektai</p>
+            </div>
+            <div class="attrValue">
+                <p>{{defects}}</p>
+            </div>
+    
+            <div class="attrName">
+                <p>VIN</p>
+            </div>
+            <div class="attrValue">
+                <p>{{car.vin}}</p>
+            </div>
+    
+            <div class="attrName">
+                <p>Kaina</p>
+            </div>
+            <div class="price" *ngIf="!car.parduotas">
+                <p>{{car.kaina}} €</p>
+            </div>
+            <div class="sold" *ngIf="car.parduotas">
+                <p>PARDUOTA</p>
+            </div>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="description">
+            <mat-form-field appearance="fill" class="textBox">
+                <textarea matInput readonly [ngModel]="car.aprasymas" rows="15" style="resize: none;"></textarea>
+            </mat-form-field>  
+        </div>
+        <div *ngIf="loggedIn">
+            <span *ngIf="car.userId == user.id">
+                <button style="margin-right: 5px; margin-bottom: 5px;" mat-flat-button color="primary" (click)="openEdit()">Redaguoti</button>
+                <button style="margin-bottom: 5px; margin-right: 5px;" mat-flat-button color="primary" (click)="changeTag()">Žymėti kaip parduotą</button>
+            </span>
+            <button *ngIf="car.userId == user.id || role == 'Admin'" (click)="delete()" mat-flat-button color="warn">Trinti</button>
+        </div>
+    </div>
+    
+    <div class="pictures">
+        <app-image-carousel [images]="images" ></app-image-carousel>
+    </div>
+    
+    <div class="comments" >
+        <h2>Komentarai</h2>
+        <mat-divider></mat-divider>
+        <div *ngIf="loggedIn && role == 'User' && user.canComment " class="commentInput">
+            <mat-form-field appearance="fill" class="textBox">
+                <textarea matInput [(ngModel)]="comment" rows="3" style="resize: none;" placeholder="Rašykite komentarą"></textarea>
+            </mat-form-field>
+            <p align="right"><button mat-flat-button (click)="postComment()" [disabled]="comment.length == 0" color="primary">Paskelbti</button></p>
+        </div>
+        <div class="noComments" *ngIf="noComments">
+            <p>Komentarų nėra.</p>
+        </div>
+
+        <ng-container *ngFor="let comment of comments">
+            <app-car-comment [comment]="comment"></app-car-comment>
+        </ng-container>
+        <div class="spacer"></div>
+    </div>
+</div>

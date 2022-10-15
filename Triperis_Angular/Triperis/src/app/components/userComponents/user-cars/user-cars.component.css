@@ -1,0 +1,39 @@
+
+  .car-listing {
+    margin: 8px;
+    background: #F7F7F7;
+    padding: 15px;
+    height: 210px;
+  }
+
+  .picture {
+    height: 180px;
+    width: 240px;
+    object-fit: cover;
+    float: left;
+  }
+
+  .car-details{
+    margin-left: 260px;
+    margin-top: 15px;
+  }
+
+  .heading{
+    margin: 15px;
+    padding-left: 5px;
+  }
+
+  .offset{
+    position: relative;
+    top: 50px;
+  }
+
+  .margin{
+    margin:0 auto;
+  }
+
+  .noListings{
+    text-align: center;
+    margin: 15px;
+    color: #95A5A6;
+  }

@@ -1,0 +1,20 @@
+.comContainer{
+    margin-top: 10px;
+    border: 1px solid #95A5A6;;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.name{
+    color: #95A5A6;
+    width: 20%;
+    float: left;
+}
+
+.date{
+    color: #95A5A6;
+}
+
+.text{
+    padding-top: 15px;
+}

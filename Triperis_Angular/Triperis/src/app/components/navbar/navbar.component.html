@@ -1,0 +1,36 @@
+<mat-toolbar color="primary">
+    <h1 mat-button [routerLink]="'/'">Triperis.lt</h1>
+
+    <span class="fill-space"></span>
+
+    <ng-container>
+        <a mat-flat-button color="primary" [routerLink]="'/'">Skelbimai</a>
+
+        <ng-container *ngIf="loggedIn">
+            <a *ngIf="role === 'User'" mat-flat-button color="primary" [routerLink]="'/UserCars'">Mano skelbimai</a>
+        </ng-container>
+
+        <ng-container *ngIf="loggedIn">
+            <a *ngIf="role === 'User' && user.canCreateListings == true" mat-flat-button color="primary" [routerLink]="'/NewListing'">Sukurti skelbimą</a>
+        </ng-container>
+
+        <ng-container *ngIf="loggedIn">
+            <a *ngIf="role === 'Admin'" mat-flat-button color="primary" [routerLink]="'/UserList'">Naudotojai</a>
+        </ng-container>
+
+        <ng-container *ngIf="!loggedIn">
+            <a mat-flat-button color="primary" [routerLink]="'/LoginRegister'">Prisijungti</a>
+        </ng-container>
+
+        <ng-container *ngIf="loggedIn">
+            <a mat-flat-button color="primary" [routerLink]="'/'" (click)="logout()">Atsijungti</a>
+        </ng-container>
+
+    </ng-container>
+</mat-toolbar>
+
+<!--https://www.techiediaries.com/angular-material-navigation-toolbar-sidenav/
+
+<a mat-button [routerLink]="'/'" target="_blank">Skelbimai i nauja langa</a>
+
+-->

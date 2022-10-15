@@ -1,0 +1,11 @@
+.footer{
+    position:fixed;
+    bottom:0px;
+    width:100%;
+}
+
+.text{
+    text-align: center;
+    font-size: 10pt;
+    font-weight: normal;
+}

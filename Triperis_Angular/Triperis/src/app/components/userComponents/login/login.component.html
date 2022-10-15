@@ -1,0 +1,20 @@
+<mat-card style="margin-top: 20px;">
+    <mat-card-title style="margin-bottom: 20px;">Prisijungimas</mat-card-title>
+    <form #loginForm="ngForm">
+        <p>
+            <mat-form-field appearance="fill">
+                <mat-label>Įveskite vartotojo vardą</mat-label>
+                <input matInput [(ngModel)]="formModel.userName" name="userName" required/>
+            </mat-form-field>
+        </p>
+
+        <p>
+            <mat-form-field appearance="fill">
+                <mat-label>Įveskite slaptažodį</mat-label>
+                <input matInput [type]="'password'" [(ngModel)]="formModel.password" name="password" required />
+            </mat-form-field>
+        </p>
+
+        <button mat-flat-button color="primary" (click)="login()" [disabled]="!loginForm.valid">Prisijungti</button>
+    </form>
+</mat-card>

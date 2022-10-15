@@ -1,0 +1,17 @@
+.textBox {
+    width: 100%;
+}
+
+.section{
+    float: left;
+    margin: 20px;
+}
+
+.width{
+    width: 30%;
+}
+
+.offset{
+    margin-top: 30px;
+    margin-left: 15px;
+}

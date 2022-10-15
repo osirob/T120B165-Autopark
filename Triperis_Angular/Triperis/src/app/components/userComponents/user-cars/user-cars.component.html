@@ -1,0 +1,20 @@
+<div class="offset" *ngIf="!loaded">
+    <mat-spinner class="margin"></mat-spinner>
+</div>
+<div *ngIf="loaded">
+    <div class="heading">
+        <h1>Mano automobilių skelbimai</h1>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="noListings" *ngIf="(cars.length + soldCars.length) == 0">
+        <p>Jūs neturite automobilių skelbimų.</p>
+    </div>
+    <div *ngIf="(cars.length + soldCars.length) != 0">
+        <div *ngFor="let car of cars">
+            <app-car-listing [carId]="car.id" (click)="navigate(car)" ></app-car-listing>
+        </div>
+        <div *ngFor="let car of soldCars">
+            <app-car-listing [carId]="car.id" (click)="navigate(car)" ></app-car-listing>
+        </div>
+    </div>
+</div>

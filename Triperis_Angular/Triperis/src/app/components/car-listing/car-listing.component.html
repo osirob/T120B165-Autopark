@@ -1,0 +1,15 @@
+<div *ngIf="ready === 2">
+    <div class="car-listing">
+        <img class="picture" [src]="imageUrl.path">
+        <div class="car-details">
+            <h2>{{car.marke}} {{car.modelis}}</h2>
+            <p>{{car.variklioTuris}} l., {{car.kuroTipas}}, {{car.metai}} m, {{car.pavaruDeze}}, {{car.galia}} kW</p>
+            <p>{{car.rida}} km., {{car.kebuloTipas}}</p>
+            <div class="sold" *ngIf="car.parduotas == true">
+                <p>PARDUOTA</p>
+            </div>
+            <h2 *ngIf="car.parduotas == false">{{car.kaina}} €</h2>
+        </div>
+    </div>
+    <mat-divider></mat-divider>
+</div>

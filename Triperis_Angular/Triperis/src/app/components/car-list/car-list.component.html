@@ -1,0 +1,12 @@
+<div class="offset" *ngIf="!loaded">
+    <mat-spinner class="margin"></mat-spinner>
+</div>
+<div *ngIf="loaded">
+    <div class="heading">
+        <h1>Automobilių skelbimai</h1>
+    </div>
+    <mat-divider></mat-divider>
+    <div *ngFor="let car of cars">
+        <app-car-listing [carId]="car.id" (click)="navigate(car)" ></app-car-listing>
+    </div>
+</div>

@@ -1,0 +1,154 @@
+<div class="offset">
+    <h1>{{title}}</h1>
+</div>
+<mat-divider></mat-divider>
+<form [formGroup]="form">
+    <div class="section">
+        <h2>Modelis</h2>
+    <p>
+        <mat-form-field appearance="fill">
+            <mat-label>Markė</mat-label>
+            <mat-select formControlName="marke" required (ngModelChange)="onChange($event)">
+                <mat-option *ngFor="let br of carsInfo" [value]="br.brand">
+                    {{br.brand}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </p>
+
+    <p>
+        <mat-form-field appearance="fill">
+            <mat-label>Modelis</mat-label>
+            <mat-select formControlName="modelis" required>
+                <mat-option *ngFor="let md of models" [value]="md">
+                    {{md}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </p>
+
+    <p>
+        <mat-form-field appearance="fill">
+            <mat-label>Metai</mat-label>
+            <mat-select formControlName="metai" required>
+                <mat-option *ngFor="let y of years" [value]="y">
+                    {{y}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </p>
+    </div>
+
+    <div class="section">
+        <h2>Išvaizda</h2>
+    <p>
+        <mat-form-field appearance="fill">
+            <mat-label>Spalva</mat-label>
+            <mat-select formControlName="spalva" required>
+                <mat-option *ngFor="let c of colors" [value]="c">
+                    {{c}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </p>
+    
+    <p>
+        <mat-form-field appearance="fill">
+            <mat-label>Kėbulo tipas</mat-label>
+            <mat-select formControlName="kebuloTipas" required>
+                <mat-option *ngFor="let b of bodies" [value]="b">
+                    {{b}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </p>
+    </div>
+
+    <div class="section">
+        <h2>Techninės savybės</h2>
+    <p>
+        <mat-form-field appearance="fill">
+            <mat-label>Variklio tūris</mat-label>
+            <input matInput formControlName="variklioTuris" maxlength="3">
+            <span matSuffix>l.</span>
+        </mat-form-field>
+    </p>
+
+    <p>
+        <mat-form-field appearance="fill">
+            <mat-label>Kuro tipas</mat-label>
+            <mat-select formControlName="kuroTipas" required>
+                <mat-option *ngFor="let f of fuelType" [value]="f">
+                    {{f}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </p>
+
+    <p>
+        <mat-form-field appearance="fill">
+            <mat-label>Galia</mat-label>
+            <input matInput formControlName="galia" maxlength="3" >
+            <span matSuffix>kW</span>
+        </mat-form-field>
+    </p>
+
+    <p>
+        <mat-form-field appearance="fill">
+            <mat-label>Pavarų dėžė</mat-label>
+            <mat-select formControlName="pavaruDeze" required>
+                <mat-option *ngFor="let g of gearboxType" [value]="g">
+                    {{g}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </p>
+
+    <p>
+        <mat-form-field appearance="fill">
+            <mat-label>Rida</mat-label>
+            <input matInput formControlName="rida" maxlength="7">
+            <span matSuffix>km</span>
+        </mat-form-field>
+    </p>
+    </div>
+
+    <div class="section">
+        <h2>Vin Kodas</h2>
+    <p>
+        <mat-form-field appearance="fill">
+            <mat-label>Vin Kodas</mat-label>
+            <input matInput formControlName="vin" maxlength="17">
+        </mat-form-field>
+    </p>
+
+    <h2>Defektai</h2>
+    <p>
+        <mat-button-toggle-group formControlName="defektai" aria-label="Font Style" required>
+            <mat-button-toggle value="true">Taip</mat-button-toggle>
+            <mat-button-toggle value="false">Ne</mat-button-toggle>
+        </mat-button-toggle-group>
+    </p>
+
+    <h2>Kaina</h2>
+    <p>
+        <mat-form-field appearance="fill">
+            <mat-label>Kaina</mat-label>
+            <input matInput formControlName="kaina" maxlength="7">
+            <span matSuffix>€</span>
+        </mat-form-field>
+    </p>
+    </div>
+
+    <div class="section width">
+        <h2>Aprašymas</h2>
+    <p>
+        <mat-form-field appearance="fill" class="textBox">
+            <textarea matInput rows="15" style="resize: none;" formControlName="aprasymas"></textarea>
+        </mat-form-field>  
+    </p>
+    </div>
+    <div class="section width">
+        <app-image-upload></app-image-upload>
+    </div>
+</form>
