@@ -10,5 +10,6 @@ namespace Triperis.Models
         //Relationships
         public List<Car> Cars { get; set; }
         public List<Comment> Comments { get; set; }
+        public List<Reaction> Reactions { get; set; }
     }
 }

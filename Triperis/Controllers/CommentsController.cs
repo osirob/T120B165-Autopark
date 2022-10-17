@@ -25,15 +25,24 @@ namespace Triperis.Controllers
             var newComment = new Comment()
             {
                 Text = comment.Text,
-                User = user, //IDK IF THIS IS CORRECT
+                User = user,
                 CarId = comment.CarId,
+                IsEdited = false,
 
                 CreationDate = DateTime.Now
             };
             dbContext.Comments.Add(newComment);
             await dbContext.SaveChangesAsync();
 
-            return Ok();
+            return CreatedAtAction(nameof(AddComment), new CommentDto()
+            {
+                Id = newComment.Id,
+                Text = newComment.Text,
+                CreationDate = newComment.CreationDate,
+                Username = newComment.User != null ? newComment.User.UserName : "[ištrintas]",
+                CarId = newComment.CarId,
+                IsEdited = newComment.IsEdited
+            });
         }
 
         [HttpDelete]
@@ -52,10 +61,11 @@ namespace Triperis.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<IActionResult> GetCommentsById([FromRoute] int id)
+        public async Task<IActionResult> GetCommentsByCarId([FromRoute] int id)
         {
-            var comments = await dbContext.Comments.Include(c => c.User).Where(x => x.CarId == id).ToListAsync();
-            if(comments.Count != 0)
+            //var comments = await dbContext.Comments.Include(c => c.User).Where(x => x.CarId == id).ToListAsync();
+            var comments = await dbContext.Cars.Where(c => c.Id == id).Include(c => c.Comments).ThenInclude(c => c.User).Select(c => c.Comments).FirstOrDefaultAsync();
+            if (comments.Count != 0)
             {
                 var commentDtos = new List<CommentDto>();
                 foreach (var comment in comments)
@@ -65,14 +75,58 @@ namespace Triperis.Controllers
                         Id = comment.Id,
                         Text = comment.Text,
                         CreationDate = comment.CreationDate,
-                        Username = comment.User != null ? comment.User.UserName : "[ištrintas]" , //LOOK IF THIS WORKS CORRECTLY
-                        CarId = comment.CarId
+                        Username = comment.User != null ? comment.User.UserName : "[ištrintas]",
+                        CarId = comment.CarId,
+                        IsEdited = comment.IsEdited
                     };
                     commentDtos.Add(commentDto);
                 }
                 return Ok(commentDtos);
             }
             return NotFound("No Comments");
+        }
+
+        [HttpGet]
+        [Route("v2/{id}")]
+        public async Task<IActionResult> GetCommentById([FromRoute] int id)
+        {
+            var comment = await dbContext.Comments.Include(c => c.User).Where(c => c.Id == id).FirstOrDefaultAsync();
+            if (comment == null)
+            {
+                return NotFound();
+            }
+            return Ok(new CommentDto(){
+                Id = comment.Id,
+                Text = comment.Text,
+                CreationDate = comment.CreationDate,
+                Username = comment.User != null ? comment.User.UserName : "[ištrintas]",
+                CarId = comment.CarId,
+                IsEdited = comment.IsEdited
+            });
+        }
+
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<IActionResult> EditComment([FromRoute] int id, [FromBody] string text)
+        {
+            var comment = dbContext.Comments.Include(c => c.User).Where(c => c.Id == id).FirstOrDefault();
+            if(comment == null)
+            {
+                return NotFound();
+            }
+
+            comment.Text = text;
+            comment.IsEdited = true;
+            await dbContext.SaveChangesAsync();
+            return Ok(new CommentDto()
+            {
+                Id = comment.Id,
+                Text = comment.Text,
+                CreationDate = comment.CreationDate,
+                Username = comment.User != null ? comment.User.UserName : "[ištrintas]",
+                CarId = comment.CarId,
+                IsEdited = comment.IsEdited
+            });
         }
     }
 }

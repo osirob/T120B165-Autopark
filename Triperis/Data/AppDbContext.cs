@@ -16,6 +16,7 @@ namespace Triperis.Data
         public DbSet<AppUser> AppUsers { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Image> Images { get; set; }
+        public DbSet<Reaction> Reactions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -39,6 +40,15 @@ namespace Triperis.Data
             modelBuilder.Entity<AppUser>()
                 .HasMany(u => u.Comments)
                 .WithOne(c => c.User);
+
+            modelBuilder.Entity<AppUser>()
+                .HasMany(u => u.Reactions)
+                .WithOne(r => r.User);
+
+            modelBuilder.Entity<Comment>()
+                .HasMany(c => c.Reactions)
+                .WithOne(r => r.Comment)
+                .HasForeignKey(r => r.CommentId);
         }
     }
     //https://stackoverflow.com/questions/19902756/asp-net-identity-dbcontext-confusion

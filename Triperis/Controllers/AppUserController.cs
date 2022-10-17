@@ -40,7 +40,7 @@ namespace Triperis.Controllers
             };
             var result = await _userManager.CreateAsync(user, newUser.Password);
             await _userManager.AddToRoleAsync(user, newUser.Role);
-            return Ok(result);
+            return CreatedAtAction(nameof(Register), result);
         }
 
         // POST: api/AppUser/Login
@@ -67,7 +67,7 @@ namespace Triperis.Controllers
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var securityToken = tokenHandler.CreateToken(tokenDescriptor);
                 var token = tokenHandler.WriteToken(securityToken);
-                return Ok(new { token });
+                return CreatedAtAction(nameof(Login),new { token });
             }
             else
             {

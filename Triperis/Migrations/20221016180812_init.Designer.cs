@@ -12,7 +12,7 @@ using Triperis.Data;
 namespace Triperis.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20221015163845_init")]
+    [Migration("20221016180812_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -325,6 +325,9 @@ namespace Triperis.Migrations
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsEdited")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -361,6 +364,33 @@ namespace Triperis.Migrations
                     b.HasIndex("CarId");
 
                     b.ToTable("Images");
+                });
+
+            modelBuilder.Entity("Triperis.Models.Reaction", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CommentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ReactionType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommentId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Reactions");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -453,11 +483,30 @@ namespace Triperis.Migrations
                     b.Navigation("Car");
                 });
 
+            modelBuilder.Entity("Triperis.Models.Reaction", b =>
+                {
+                    b.HasOne("Triperis.Models.Comment", "Comment")
+                        .WithMany("Reactions")
+                        .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Triperis.Models.AppUser", "User")
+                        .WithMany("Reactions")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Comment");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Triperis.Models.AppUser", b =>
                 {
                     b.Navigation("Cars");
 
                     b.Navigation("Comments");
+
+                    b.Navigation("Reactions");
                 });
 
             modelBuilder.Entity("Triperis.Models.Car", b =>
@@ -465,6 +514,11 @@ namespace Triperis.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("Images");
+                });
+
+            modelBuilder.Entity("Triperis.Models.Comment", b =>
+                {
+                    b.Navigation("Reactions");
                 });
 #pragma warning restore 612, 618
         }

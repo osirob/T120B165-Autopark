@@ -37,7 +37,7 @@ namespace Triperis.Controllers
         public async Task<IActionResult> GetProfileById([FromRoute] int id)
         {
             var user = await _userManager.FindByIdAsync(id.ToString());
-            return Ok(new {
+            return Ok( new {
                 UserName = user.UserName,
                 Email = user.Email,
                 Phone = user.PhoneNumber

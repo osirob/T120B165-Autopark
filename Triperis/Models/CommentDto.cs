@@ -7,5 +7,6 @@
         public DateTime CreationDate { get; set; }
         public string Username { get; set; }
         public int CarId { get; set; }
+        public bool IsEdited { get; set; }
     }
 }
