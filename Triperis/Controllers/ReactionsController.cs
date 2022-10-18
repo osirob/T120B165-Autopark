@@ -53,7 +53,7 @@ namespace Triperis.Controllers
         }
 
         [HttpPost]
-        [Route("{id}")]
+        [Route("")]
         public async Task<IActionResult> AddReaction([FromBody] AddReactionDto reaction)
         {
             var user = await _userManager.FindByIdAsync(reaction.UserId.ToString());

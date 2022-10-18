@@ -292,5 +292,69 @@ namespace Triperis.Controllers
             }
             return NotFound("Car not found");
         }
+
+        [HttpGet]
+        [Route("{carId}/Comments/{commentId}/Reactions")]
+        public async Task<IActionResult> GetCarCommentReactions([FromRoute] int carId, [FromRoute] int commentId)
+        {
+            var car = await dbContext.Cars
+                .Where(c => c.Id == carId)
+                .Include(c => c.Comments.Where(c => c.Id == commentId))
+                    .ThenInclude(c => c.Reactions)
+                        .ThenInclude(r => r.User)
+                .Include(c => c.Comments.Where(c => c.Id == commentId))
+                    .ThenInclude(c => c.User)
+                .FirstOrDefaultAsync();
+
+            var reactions = new List<ReactionDto>();
+            foreach(Reaction r in car.Comments[0].Reactions)
+            {
+                reactions.Add(new ReactionDto()
+                {
+                    Id = r.Id,
+                    UserId = r.User.Id,
+                    CommentId = r.CommentId,
+                    ReactionType = r.ReactionType
+                });
+            }
+
+            CarHierarchy ret = new CarHierarchy()
+            {
+                Id = car.Id,
+                Marke = car.Marke,
+                Modelis = car.Modelis,
+                Metai = car.Metai,
+                KuroTipas = car.KuroTipas,
+                KebuloTipas = car.KebuloTipas,
+                VariklioTuris = car.VariklioTuris,
+                Galia = car.Galia,
+                Rida = car.Rida,
+                Defektai = car.Defektai,
+                Spalva = car.Spalva,
+                PavaruDeze = car.PavaruDeze,
+                Aprasymas = car.Aprasymas,
+                SukurimoData = car.SukurimoData,
+                AtnaujintasData = car.AtnaujintasData,
+                Parduotas = car.Parduotas,
+                Kaina = car.Kaina,
+                Vin = car.Vin,
+                Ispejimas = car.Ispejimas,
+                UserId = car.UserId,
+                Comment = new CommentHierarchy()
+                {
+                    Id = car.Comments[0].Id,
+                    Text = car.Comments[0].Text,
+                    CreationDate = car.Comments[0].CreationDate,
+                    Username = car.Comments[0].User != null ? car.Comments[0].User.UserName : "[ištrintas]",
+                    CarId = car.Comments[0].CarId,
+                    IsEdited = car.Comments[0].IsEdited,
+                    Reactions = reactions
+                }
+            };
+
+            return Ok(ret);
+
+        }
     }
+
 }
