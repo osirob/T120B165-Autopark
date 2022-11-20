@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Triperis.Data;
 using Triperis.Models;
 
@@ -17,6 +19,7 @@ namespace Triperis.Controllers
 
         [HttpPost, DisableRequestSizeLimit]
         [Route("Upload/{id}")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> UploadImage([FromRoute] int id)
         {
             var files = Request.Form.Files; //i guess i dont index this if i want o upload more than 1 image?
@@ -58,11 +61,18 @@ namespace Triperis.Controllers
 
         [HttpPut, DisableRequestSizeLimit]
         [Route("Edit/{id}")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> EditImages([FromRoute] int id)
         {
             var files = Request.Form.Files; //i guess i dont index this if i want o upload more than 1 image?
-            var carImages = dbContext.Images.Where(x => x.CarId == id).ToList();
-            if(carImages != null)
+            var carImages = dbContext.Images.Include(c => c.Car).Where(x => x.CarId == id).ToList();
+            var claimsUserId = int.Parse(User.Claims.FirstOrDefault(x => x.Type.Equals("UserId")).Value);
+            if (claimsUserId != carImages[0].Car.UserId)
+            {
+                return Forbid();
+            }
+
+            if (carImages != null)
             {
                 foreach(var image in carImages)
                 {
@@ -130,6 +140,7 @@ namespace Triperis.Controllers
 
         [HttpDelete]
         [Route("DeleteCarImages/{id}")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> DeleteCarImages([FromRoute] int id)
         {
             var carImages = dbContext.Images.Where(x => x.CarId == id);

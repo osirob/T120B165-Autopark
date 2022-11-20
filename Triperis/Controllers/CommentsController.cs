@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Triperis.Data;
@@ -19,6 +20,7 @@ namespace Triperis.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> AddComment([FromBody] CommentCreateDto comment)
         {
             AppUser user = await _userManager.FindByIdAsync(comment.UserId.ToString());
@@ -47,6 +49,7 @@ namespace Triperis.Controllers
 
         [HttpDelete]
         [Route("{id}")]
+        [Authorize(Roles = "User, Admin")]
         public async Task<IActionResult> DeleteComment([FromRoute] int id)
         {
             var existingComment = await dbContext.Comments.FirstOrDefaultAsync(x => x.Id == id);
@@ -107,12 +110,19 @@ namespace Triperis.Controllers
 
         [HttpPut]
         [Route("{id}")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> EditComment([FromRoute] int id, [FromBody] string text)
         {
             var comment = dbContext.Comments.Include(c => c.User).Where(c => c.Id == id).FirstOrDefault();
             if(comment == null)
             {
                 return NotFound();
+            }
+
+            var claimsUserId = int.Parse(User.Claims.FirstOrDefault(x => x.Type.Equals("UserId")).Value);
+            if (claimsUserId != comment.User.Id)
+            {
+                return Forbid();
             }
 
             comment.Text = text;

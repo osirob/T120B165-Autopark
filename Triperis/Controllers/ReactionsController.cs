@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Triperis.Data;
@@ -54,6 +55,7 @@ namespace Triperis.Controllers
 
         [HttpPost]
         [Route("")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> AddReaction([FromBody] AddReactionDto reaction)
         {
             var user = await _userManager.FindByIdAsync(reaction.UserId.ToString());
@@ -76,9 +78,16 @@ namespace Triperis.Controllers
 
         [HttpDelete]
         [Route("{id}")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> RemoveReaction([FromRoute] int id)
         {
             var reaction = await dbContext.Reactions.Where(r => r.Id == id).Include(r => r.User).FirstOrDefaultAsync();
+            var claimsUserId = int.Parse(User.Claims.FirstOrDefault(x => x.Type.Equals("UserId")).Value);
+            if (claimsUserId != reaction.User.Id)
+            {
+                return Forbid();
+            }
+
             dbContext.Reactions.Remove(reaction);
             await dbContext.SaveChangesAsync();
             return Ok(new ReactionDto 
@@ -91,9 +100,16 @@ namespace Triperis.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> ChangeReaction([FromBody] ChangeReactionDto reactionDto )
         {
             var reaction = await dbContext.Reactions.Where(r => r.Id == reactionDto.Id).Include(r => r.User).FirstOrDefaultAsync();
+            var claimsUserId = int.Parse(User.Claims.FirstOrDefault(x => x.Type.Equals("UserId")).Value);
+            if (claimsUserId != reaction.User.Id)
+            {
+                return Forbid();
+            }
+
             reaction.ReactionType = reactionDto.ReactionType;
             await dbContext.SaveChangesAsync();
             return Ok(new ReactionDto 

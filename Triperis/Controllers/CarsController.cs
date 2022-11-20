@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Triperis.Data;
@@ -61,9 +62,15 @@ namespace Triperis.Controllers
 
         [HttpGet]
         [Route("UserCars/{id}")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> GetAllCarsUser([FromRoute] int id)
         {
-            //EDIT HERE
+            var claimsUserId = int.Parse(User.Claims.FirstOrDefault(x => x.Type.Equals("UserId")).Value);
+            if(claimsUserId != id)
+            {
+                return Forbid();
+            }
+
             var cars = await dbContext.Cars.Where(c => c.UserId == id).Where(c => c.Parduotas == false).ToListAsync();
             var carDtos = new List<CarDto>();
 
@@ -106,9 +113,15 @@ namespace Triperis.Controllers
 
         [HttpGet]
         [Route("UserCarsSold/{id}")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> GetAllCarsUserSold([FromRoute] int id)
         {
-            //EDIT HERE
+            var claimsUserId = int.Parse(User.Claims.FirstOrDefault(x => x.Type.Equals("UserId")).Value);
+            if (claimsUserId != id)
+            {
+                return Forbid();
+            }
+
             var cars = await dbContext.Cars.Where(c => c.UserId == id).Where(c => c.Parduotas == true).ToListAsync();
             var carDtos = new List<CarDto>();
 
@@ -192,6 +205,7 @@ namespace Triperis.Controllers
 
         //Add car to db
         [HttpPost]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> AddCar([FromBody] CarCreateDto car)
         {
             bool warning = false;
@@ -235,9 +249,16 @@ namespace Triperis.Controllers
         //Update car
         [HttpPut]
         [Route("{id}")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> UpdateCar([FromRoute] int id, [FromBody] CarCreateDto car)
         {
             var existingCar = await dbContext.Cars.FirstOrDefaultAsync(x => x.Id == id);
+            var claimsUserId = int.Parse(User.Claims.FirstOrDefault(x => x.Type.Equals("UserId")).Value);
+            if (claimsUserId != existingCar.UserId)
+            {
+                return Forbid();
+            }
+
             if (existingCar != null)
             {
                 existingCar.Marke = car.Marke;
@@ -266,6 +287,7 @@ namespace Triperis.Controllers
         //Delete car
         [HttpDelete]
         [Route("{id}")]
+        [Authorize(Roles = "User, Admin")]
         public async Task<IActionResult> DeleteCar([FromRoute] int id)
         {
             var existingCar = await dbContext.Cars.FirstOrDefaultAsync(x => x.Id == id);
@@ -280,6 +302,7 @@ namespace Triperis.Controllers
 
         [HttpPut]
         [Route("ChangeTag")]
+        [Authorize(Roles = "User, Admin")]
         public async Task<IActionResult> ChangeTag([FromBody] int id)
         {
             var existingCar = await dbContext.Cars.FirstOrDefaultAsync(x => x.Id == id);
@@ -295,6 +318,7 @@ namespace Triperis.Controllers
 
         [HttpGet]
         [Route("{carId}/Comments/{commentId}/Reactions")]
+        [Authorize(Roles = "User, Admin")]
         public async Task<IActionResult> GetCarCommentReactions([FromRoute] int carId, [FromRoute] int commentId)
         {
             var car = await dbContext.Cars
