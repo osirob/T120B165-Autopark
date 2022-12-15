@@ -43,6 +43,7 @@ import { CarAddComponent } from './components/car-add/car-add.component';
 import { MatTooltipModule} from '@angular/material/tooltip';
 import { CarEditComponent } from './components/car-edit/car-edit.component';
 import { UserCarsComponent } from './components/userComponents/user-cars/user-cars.component';
+import {MatMenuModule} from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -97,7 +98,8 @@ import { UserCarsComponent } from './components/userComponents/user-cars/user-ca
     IvyCarouselModule,
     MatSelectModule,
     MatButtonToggleModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatMenuModule
   ],
   providers: [UsersService,{
     provide: HTTP_INTERCEPTORS,

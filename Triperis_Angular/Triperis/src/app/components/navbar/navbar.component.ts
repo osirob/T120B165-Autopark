@@ -2,7 +2,7 @@ import { Router } from '@angular/router';
 import { UserDetails } from 'src/app/models/userDetails.model';
 import { Observable } from 'rxjs';
 import { UsersService } from './../../services/users.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-navbar',
@@ -13,10 +13,17 @@ export class NavbarComponent implements OnInit {
   loggedIn : boolean;
   role: string;
   user: UserDetails;
+  screenWidth: number;
   constructor(private usersService : UsersService, private router: Router) { }
 
   ngOnInit(): void {
     this.checkLogin();
+    this.screenWidth = window.innerWidth;
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.screenWidth = window.innerWidth;
   }
 
   logout() : void {

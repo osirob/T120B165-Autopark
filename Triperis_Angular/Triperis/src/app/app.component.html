@@ -1,11 +1,20 @@
-<app-navbar></app-navbar>
-    <div class="appContent">
+<!DOCTYPE html>
+<html>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+    </style>
+    <head>
+        <title>Autopark</title>
+    </head>
+    <body>
+        <app-navbar></app-navbar>
+        <div class="appContent">
         <div>
             <!--class="col-md-8 offset-md-2"-->
             <router-outlet></router-outlet>
         </div>
-    </div>
-    <div class="spacer">
-
-    </div>
-<app-footer></app-footer>
+        </div>
+        <div class="spacer"></div>
+    <app-footer></app-footer>
+    </body>
+</html>

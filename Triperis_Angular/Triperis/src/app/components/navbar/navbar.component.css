@@ -1,3 +1,10 @@
 .fill-space{
     flex: 1 1 auto;
 }
+
+::ng-deep .menuStyle{
+    position: absolute;
+    width: 150px;
+    top: 0;
+    right: 0;
+}

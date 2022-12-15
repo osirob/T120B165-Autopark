@@ -3,7 +3,7 @@
 
     <span class="fill-space"></span>
 
-    <ng-container>
+    <ng-container *ngIf="screenWidth >= 800">
         <a mat-flat-button color="primary" [routerLink]="'/'">Skelbimai</a>
 
         <ng-container *ngIf="loggedIn">
@@ -27,7 +27,37 @@
         </ng-container>
 
     </ng-container>
+
+    <ng-container *ngIf="screenWidth < 800">
+        <button mat-icon-button  xPosition="after" yPosition="below"[matMenuTriggerFor]="menu">
+            <mat-icon>menu</mat-icon>
+        </button>
+    </ng-container>
+    <mat-menu #menu="matMenu" xPosition="before" class="menuStyle">
+        <button mat-menu-item [routerLink]="'/'">Skelbimai</button>
+        <ng-container *ngIf="loggedIn">
+            <button mat-menu-item *ngIf="role === 'User'"  [routerLink]="'/UserCars'">Mano skelbimai</button>
+        </ng-container>
+
+        <ng-container *ngIf="loggedIn">
+            <button mat-menu-item *ngIf="role === 'User' && user.canCreateListings == true" [routerLink]="'/NewListing'">Sukurti skelbimą</button>
+        </ng-container>
+
+        <ng-container *ngIf="loggedIn">
+            <button mat-menu-item *ngIf="role === 'Admin'" [routerLink]="'/UserList'">Naudotojai</button>
+        </ng-container>
+
+        <ng-container *ngIf="!loggedIn">
+            <button mat-menu-item [routerLink]="'/LoginRegister'">Prisijungti</button>
+        </ng-container>
+
+        <ng-container *ngIf="loggedIn">
+            <button mat-menu-item [routerLink]="'/'" (click)="logout()">Atsijungti</button>
+        </ng-container>
+    </mat-menu>
+
 </mat-toolbar>
+
 
 <!--https://www.techiediaries.com/angular-material-navigation-toolbar-sidenav/
 

@@ -50,6 +50,22 @@ namespace Triperis.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ConcurrencyStamp = "edcefaa1-81ea-4045-b40e-fdc5f7f2e87a",
+                            Name = "Admin",
+                            NormalizedName = "Admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ConcurrencyStamp = "09a63953-c2a0-4b2b-87ff-99672bbe882f",
+                            Name = "User",
+                            NormalizedName = "User"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -134,6 +150,18 @@ namespace Triperis.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 1,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            UserId = 2,
+                            RoleId = 2
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
@@ -227,6 +255,40 @@ namespace Triperis.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AccessFailedCount = 0,
+                            CanComment = true,
+                            CanCreateListings = true,
+                            ConcurrencyStamp = "de6c6e34-5c25-4ebb-9741-b9c90892a3ce",
+                            Email = "admin@a.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            PasswordHash = "AQAAAAEAACcQAAAAEM1kW2WCS2ZaQ5z8g+XBdmrvVG2sgQCFz6mhoJ8LR7LNBBqhYH88Ox7swVuYl01CCQ==",
+                            PhoneNumber = "+37054338654",
+                            PhoneNumberConfirmed = false,
+                            TwoFactorEnabled = false,
+                            UserName = "adminas"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AccessFailedCount = 0,
+                            CanComment = true,
+                            CanCreateListings = true,
+                            ConcurrencyStamp = "c64e5f25-7dde-4a9b-9e03-c69366a5acb7",
+                            Email = "seller@a.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            PasswordHash = "AQAAAAEAACcQAAAAEL73ra4wlhCPEi5T5Z66Qqvt8l9pVLmm4zaRNm736tSXmbB/hmLk7KHLd3IrAqY3lw==",
+                            PhoneNumber = "+37054338657",
+                            PhoneNumberConfirmed = false,
+                            TwoFactorEnabled = false,
+                            UserName = "pardavejas"
+                        });
                 });
 
             modelBuilder.Entity("Triperis.Models.Car", b =>

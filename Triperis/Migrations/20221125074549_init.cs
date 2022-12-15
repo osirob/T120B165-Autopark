@@ -269,6 +269,34 @@ namespace Triperis.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { 1, "edcefaa1-81ea-4045-b40e-fdc5f7f2e87a", "Admin", "Admin" },
+                    { 2, "09a63953-c2a0-4b2b-87ff-99672bbe882f", "User", "User" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "CanComment", "CanCreateListings", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[,]
+                {
+                    { 1, 0, true, true, "de6c6e34-5c25-4ebb-9741-b9c90892a3ce", "admin@a.com", false, false, null, null, null, "AQAAAAEAACcQAAAAEM1kW2WCS2ZaQ5z8g+XBdmrvVG2sgQCFz6mhoJ8LR7LNBBqhYH88Ox7swVuYl01CCQ==", "+37054338654", false, null, false, "adminas" },
+                    { 2, 0, true, true, "c64e5f25-7dde-4a9b-9e03-c69366a5acb7", "seller@a.com", false, false, null, null, null, "AQAAAAEAACcQAAAAEL73ra4wlhCPEi5T5Z66Qqvt8l9pVLmm4zaRNm736tSXmbB/hmLk7KHLd3IrAqY3lw==", "+37054338657", false, null, false, "pardavejas" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { 1, 1 });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { 2, 2 });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
