@@ -117,7 +117,7 @@
                 <textarea matInput readonly [ngModel]="car.aprasymas" rows="15" style="resize: none;"></textarea>
             </mat-form-field>  
         </div>
-        <div *ngIf="loggedIn">
+        <div *ngIf="loggedIn" style="margin-bottom: 100px">
             <span *ngIf="car.userId == user.id">
                 <button style="margin-right: 5px; margin-bottom: 5px;" mat-flat-button color="primary" (click)="openEdit()">Redaguoti</button>
                 <button style="margin-bottom: 5px; margin-right: 5px;" mat-flat-button color="primary" (click)="changeTag()">Žymėti kaip parduotą</button>
