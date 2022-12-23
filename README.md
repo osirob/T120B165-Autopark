@@ -36,4 +36,3 @@ Sistema sudarys:
 
 Sistėmos talpinimui bus naudojamas Azure/AWS.
 
-![deployment](https://i.imgur.com/6zd5yO7.png)
