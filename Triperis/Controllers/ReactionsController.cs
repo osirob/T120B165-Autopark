@@ -20,8 +20,11 @@ namespace Triperis.Controllers
             this._userManager = userManager;
         }
 
-        [HttpGet]
+
+
         [Route("v1/{id}")]
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetReactionsByCommentId([FromRoute] int id)
         {
             var reactions = await dbContext.Reactions.Where(r => r.CommentId == id).Include(r => r.User).ToListAsync();
@@ -40,6 +43,7 @@ namespace Triperis.Controllers
 
         [HttpGet]
         [Route("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetReactionById([FromRoute] int id)
         {
             var reaction = await dbContext.Reactions.Where(r => r.Id == id).Include(r => r.User).FirstOrDefaultAsync();
@@ -56,6 +60,9 @@ namespace Triperis.Controllers
         [HttpPost]
         [Route("")]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> AddReaction([FromBody] AddReactionDto reaction)
         {
             var user = await _userManager.FindByIdAsync(reaction.UserId.ToString());
@@ -79,6 +86,9 @@ namespace Triperis.Controllers
         [HttpDelete]
         [Route("{id}")]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> RemoveReaction([FromRoute] int id)
         {
             var reaction = await dbContext.Reactions.Where(r => r.Id == id).Include(r => r.User).FirstOrDefaultAsync();
@@ -101,6 +111,9 @@ namespace Triperis.Controllers
 
         [HttpPut]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> ChangeReaction([FromBody] ChangeReactionDto reactionDto )
         {
             var reaction = await dbContext.Reactions.Where(r => r.Id == reactionDto.Id).Include(r => r.User).FirstOrDefaultAsync();

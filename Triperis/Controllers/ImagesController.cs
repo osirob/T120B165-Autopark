@@ -20,6 +20,10 @@ namespace Triperis.Controllers
         [HttpPost, DisableRequestSizeLimit]
         [Route("Upload/{id}")]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> UploadImage([FromRoute] int id)
         {
             var files = Request.Form.Files; //i guess i dont index this if i want o upload more than 1 image?
@@ -62,6 +66,10 @@ namespace Triperis.Controllers
         [HttpPut, DisableRequestSizeLimit]
         [Route("Edit/{id}")]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> EditImages([FromRoute] int id)
         {
             var files = Request.Form.Files; //i guess i dont index this if i want o upload more than 1 image?
@@ -118,6 +126,7 @@ namespace Triperis.Controllers
 
         [HttpGet]
         [Route("GetFirstImage/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetFirstImageURL([FromRoute] int id)
         {
             var carImages = dbContext.Images.Where(x => x.CarId == id).OrderBy(x => x.Path).ToList();
@@ -126,6 +135,7 @@ namespace Triperis.Controllers
 
         [HttpGet]
         [Route("GetCarImages/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetCarImages([FromRoute] int id)
         {
             var carImages = dbContext.Images.Where(x => x.CarId == id).OrderBy(x => x.Path).ToList();
@@ -141,6 +151,9 @@ namespace Triperis.Controllers
         [HttpDelete]
         [Route("DeleteCarImages/{id}")]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> DeleteCarImages([FromRoute] int id)
         {
             var carImages = dbContext.Images.Where(x => x.CarId == id);

@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +16,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options => 
+{
+    options.SwaggerDoc("v1",
+        new OpenApiInfo
+        {
+            Title = "Autopark API Documentation",
+            Version = "v1"
+        });
+});
 
 //Connects to Database
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DbConnection")));
@@ -62,7 +71,15 @@ builder.Services.AddAuthentication(options => {
 var app = builder.Build();
 
 app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwaggerUI(options => {
+    options.SwaggerEndpoint("/swagger/v1/swagger.json",
+        "Swagger Demo Documentation v1");
+});
+app.UseReDoc(options =>
+{
+    options.DocumentTitle = "Autopark API Documentation";
+    options.SpecUrl = "/swagger/v1/swagger.json";
+});
 
 app.UseCors(builder => 
     builder.AllowAnyOrigin()

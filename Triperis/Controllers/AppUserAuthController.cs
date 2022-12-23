@@ -18,6 +18,8 @@ namespace Triperis.Controllers
         //GET api/AppUserAuth
         [HttpGet]
         [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetUserProfile()
         {
             string userId = User.Claims.First(c => c.Type == "UserId").Value;
@@ -34,6 +36,7 @@ namespace Triperis.Controllers
 
         [HttpGet]
         [Route("GetUserById/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetProfileById([FromRoute] int id)
         {
             var user = await _userManager.FindByIdAsync(id.ToString());

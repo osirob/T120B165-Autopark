@@ -23,6 +23,7 @@ namespace Triperis.Controllers
         //GET all cars
         // api/Cars
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllCars()
         {
             var cars = await dbContext.Cars.Where(c => c.Parduotas == false).ToListAsync();
@@ -63,6 +64,10 @@ namespace Triperis.Controllers
         [HttpGet]
         [Route("UserCars/{id}")]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetAllCarsUser([FromRoute] int id)
         {
             var claimsUserId = int.Parse(User.Claims.FirstOrDefault(x => x.Type.Equals("UserId")).Value);
@@ -114,6 +119,10 @@ namespace Triperis.Controllers
         [HttpGet]
         [Route("UserCarsSold/{id}")]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetAllCarsUserSold([FromRoute] int id)
         {
             var claimsUserId = int.Parse(User.Claims.FirstOrDefault(x => x.Type.Equals("UserId")).Value);
@@ -166,6 +175,8 @@ namespace Triperis.Controllers
         // api/Cars/5
         [HttpGet]
         [Route("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetCar([FromRoute] int id)
         {
             var car = await dbContext.Cars.FirstOrDefaultAsync(x => x.Id == id);
@@ -206,6 +217,10 @@ namespace Triperis.Controllers
         //Add car to db
         [HttpPost]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> AddCar([FromBody] CarCreateDto car)
         {
             bool warning = false;
@@ -250,6 +265,10 @@ namespace Triperis.Controllers
         [HttpPut]
         [Route("{id}")]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> UpdateCar([FromRoute] int id, [FromBody] CarCreateDto car)
         {
             var existingCar = await dbContext.Cars.FirstOrDefaultAsync(x => x.Id == id);
@@ -288,6 +307,10 @@ namespace Triperis.Controllers
         [HttpDelete]
         [Route("{id}")]
         [Authorize(Roles = "User, Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> DeleteCar([FromRoute] int id)
         {
             var existingCar = await dbContext.Cars.FirstOrDefaultAsync(x => x.Id == id);
@@ -303,6 +326,10 @@ namespace Triperis.Controllers
         [HttpPut]
         [Route("ChangeTag")]
         [Authorize(Roles = "User, Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> ChangeTag([FromBody] int id)
         {
             var existingCar = await dbContext.Cars.FirstOrDefaultAsync(x => x.Id == id);
@@ -319,6 +346,7 @@ namespace Triperis.Controllers
         [HttpGet]
         [Route("{carId}/Comments/{commentId}/Reactions")]
         [Authorize(Roles = "User, Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetCarCommentReactions([FromRoute] int carId, [FromRoute] int commentId)
         {
             var car = await dbContext.Cars

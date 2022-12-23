@@ -21,6 +21,10 @@ namespace Triperis.Controllers
 
         [HttpPost]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> AddComment([FromBody] CommentCreateDto comment)
         {
             AppUser user = await _userManager.FindByIdAsync(comment.UserId.ToString());
@@ -50,6 +54,10 @@ namespace Triperis.Controllers
         [HttpDelete]
         [Route("{id}")]
         [Authorize(Roles = "User, Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> DeleteComment([FromRoute] int id)
         {
             var existingComment = await dbContext.Comments.FirstOrDefaultAsync(x => x.Id == id);
@@ -64,6 +72,8 @@ namespace Triperis.Controllers
 
         [HttpGet]
         [Route("{id}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetCommentsByCarId([FromRoute] int id)
         {
             //var comments = await dbContext.Comments.Include(c => c.User).Where(x => x.CarId == id).ToListAsync();
@@ -91,6 +101,8 @@ namespace Triperis.Controllers
 
         [HttpGet]
         [Route("v2/{id}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetCommentById([FromRoute] int id)
         {
             var comment = await dbContext.Comments.Include(c => c.User).Where(c => c.Id == id).FirstOrDefaultAsync();
@@ -111,6 +123,10 @@ namespace Triperis.Controllers
         [HttpPut]
         [Route("{id}")]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> EditComment([FromRoute] int id, [FromBody] string text)
         {
             var comment = dbContext.Comments.Include(c => c.User).Where(c => c.Id == id).FirstOrDefault();

@@ -27,6 +27,8 @@ namespace Triperis.Controllers
         // Might want to check if there are already users with same username or email, but eh... Maybe in the future
         [HttpPost]
         [Route("Register")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Register(AppUserRegisterDto newUser)
         {
             newUser.Role = "User";
@@ -46,6 +48,8 @@ namespace Triperis.Controllers
         // POST: api/AppUser/Login
         [HttpPost]
         [Route("Login")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Login(LoginDto login)
         {
             var user  = await _userManager.FindByNameAsync(login.UserName);
